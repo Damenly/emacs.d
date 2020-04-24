@@ -57,6 +57,11 @@
 
 ;;(setq doom-theme 'doom-vibrant)
 (setq doom-theme 'doom-solarized-dark)
+(setq doom-solarized-dark-brighter-comments t)
+;;(setq doom-solarized-dark-comment-bg t)
+
+;;(def-package-hook! doom-themes :disable)
+
 
 (setq mu4e-mu-binary "/usr/local/bin/mu")
 (after! mu4e
@@ -155,7 +160,7 @@
 ;;;
 ;;;
 
-(global-unset-key [mouse-3])
+;;(global-unset-key [mouse-3])
 
 
 ;;
@@ -227,3 +232,4 @@
   ;; use rtags flycheck mode -- clang warnings shown inline
   )
 (setq rtags-jump-to-first-match t)
+
