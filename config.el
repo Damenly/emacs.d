@@ -16,10 +16,10 @@
 ;; + `doom-variable-pitch-font'
 ;; + `doom-big-font' -- used for `doom-big-font-mode'
 ;;
-;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
+;; They all accept either a font-spec, font string ("Input Mono-14"), or xlfd
 ;; font string. You generally only need these two:
 ;; test
-(setq doom-font (font-spec :family "Monaco" :size 16)
+(setq doom-font (font-spec :family "Monaco" :size 19)
       doom-variable-pitch-font (font-spec :family "PT sans"))
 (set-face-bold-p 'bold nil)
 
@@ -56,7 +56,9 @@
 ;; they are implemented.
 
 ;;(setq doom-theme 'doom-vibrant)
-(setq doom-theme 'doom-solarized-dark)
+;;(setq doom-theme 'doom-solarized-dark)
+
+(setq doom-theme 'wheatgrass)
 (setq doom-solarized-dark-brighter-comments t)
 ;;(setq doom-solarized-dark-comment-bg t)
 
@@ -160,7 +162,7 @@
 ;;;
 ;;;
 
-;;(global-unset-key [mouse-3])
+
 
 
 ;;
@@ -200,6 +202,8 @@
   (rtags-location-stack-back)
   (rtags-delete-rtags-windows))
 
+(defun dummy ())
+
 ;; only run this if rtags is installed
 (when (require 'rtags nil :noerror)
   ;; make sure you have company-mode installed
@@ -215,6 +219,8 @@
     (function rtags-previous-match))
   (define-key c-mode-base-map (kbd "M-n")
     (function rtags-next-match))
+  (define-key c-mode-base-map [mouse-1]
+    (function dummy))
   ;; disable prelude's use of C-c r, as this is the rtags keyboard prefix
   ;;(define-key prelude-mode-map (kbd "c-c r") nil)
   ;; install standard rtags keybindings. do m-. on the symbol below to
@@ -232,4 +238,48 @@
   ;; use rtags flycheck mode -- clang warnings shown inline
   )
 (setq rtags-jump-to-first-match t)
+
+
+(defun cus-unset-keys()
+  (interactive)
+  (local-unset-key [mouse-1])
+  (local-unset-key [mouse-2])
+  (local-unset-key [mouse-3]))
+
+(add-hook 'c-mode-hook 'unset-keys)
+
+
+(add-hook 'post-command-hook
+          (lambda ()
+            (local-unset-key [mouse-1])
+            (local-unset-key [mouse-2])
+            (local-unset-key [mouse-3])))
+
+;;(setq rtags-mode-map nil)
+;;(setq rtags-dependency-tree-mode-map nil)
+
+(with-eval-after-load "rtags"
+     (interactive)
+     (local-unset-key [mouse-1])
+     (define-key rtags-mode-map [mouse-1] 'dummy)
+     (define-key rtags-dependency-tree-mode-map [mouse-1] 'dummy)
+     (define-key rtags-references-tree-mode-map [mouse-1] 'dummy)
+     (define-key rtags-location-stack-visualize-mode-map [mouse-1] 'dummy)
+     (setq rtags-mode-map nil)
+     (setq rtags-dependency-tree-mode-map nil)
+     (setq rtags-references-tree-mode-map nil)
+     (setq rtags-location-stack-visualize-mode-map nil))
+
+
+(add-hook 'python-mode-hook
+  (lambda ()
+    (setq hl-line-mode nil)))
+
+(add-hook 'c-mode-hook
+  (lambda ()
+    (setq hl-line-mode nil)))
+
+(add-hook 'emacs-lisp-mode-hook
+  (lambda ()
+    (setq hl-line-mode nil)))
 
