@@ -10,7 +10,7 @@
 
 ;; This is needed because emacs won't pick up mu4e otherwise:
 ;;(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e/")
-(add-to-list 'load-path "/Users/damenly/workspace/mu/mu4e")
+(add-to-list 'load-path "/root/workspace/mu/mu4e")
 
 (doom! :input
        chinese
@@ -36,7 +36,7 @@
        modeline          ; snazzy, Atom-inspired modeline, plus API
        ;;nav-flash         ; blink the current line after jumping
        ;;neotree           ; a project drawer, like NERDTree for vim
-       ;;ophints           ; highlight the region an operation acts on
+       ophints           ; highlight the region an operation acts on
        (popup            ; tame sudden yet inevitable temporary windows
         +all             ; catch all popups that start with an asterix
         +defaults)       ; default popup rules
@@ -66,7 +66,7 @@
 
        :emacs
        dired             ; making dired pretty [functional]
-       ;;electric          ; smarter, keyword-based electric-indent
+       electric          ; smarter, keyword-based electric-indent
        ibuffer           ; interactive buffer management
        vc                ; version-control and Emacs, sitting in a tree
 
@@ -74,7 +74,7 @@
        eshell            ; a consistent, cross-platform shell (WIP)
        shell             ; a terminal REPL for Emacs
        term              ; terminals in Emacs
-       ;;vterm             ; another terminals in Emacs
+       vterm             ; another terminals in Emacs
 
        :tools
        ;;ansible
@@ -90,7 +90,7 @@
        (lookup           ; helps you navigate your code and documentation
         +docsets)        ; ...or in Dash docsets locally
        ;;lsp
-       macos             ; MacOS-specific commands
+       ;;macos             ; MacOS-specific commands
        ;;magit             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
