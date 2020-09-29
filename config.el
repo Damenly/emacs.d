@@ -270,16 +270,5 @@
      (setq rtags-references-tree-mode-map nil)
      (setq rtags-location-stack-visualize-mode-map nil))
 
-
-(add-hook 'python-mode-hook
-  (lambda ()
-    (setq hl-line-mode nil)))
-
-(add-hook 'c-mode-hook
-  (lambda ()
-    (setq hl-line-mode nil)))
-
-(add-hook 'emacs-lisp-mode-hook
-  (lambda ()
-    (setq hl-line-mode nil)))
-
+(global-hl-line-mode 1)
+(set-face-background 'hl-line "#0c586e")
