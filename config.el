@@ -176,11 +176,6 @@
 ;; auto copy
 (setq x-select-enable-primary t)
 
-;; Whatever... it's easy enough to implement that part ourselves
-(setq interprogram-paste-function
-      (lambda ()
-        (shell-command-to-string "pbpaste")))
-
 (setq mouse-drag-copy-region t)
 
 (setq confirm-kill-emacs nil)
@@ -248,7 +243,6 @@
 
 (add-hook 'c-mode-hook 'unset-keys)
 
-
 (add-hook 'post-command-hook
           (lambda ()
             (local-unset-key [mouse-1])
@@ -272,3 +266,6 @@
 
 (global-hl-line-mode 1)
 (set-face-background 'hl-line "#0c586e")
+
+(add-to-list 'load-path "~/.doom.d/")
+(require 'kernel)
