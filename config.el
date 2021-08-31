@@ -61,8 +61,8 @@
 
 (setq mu4e-mu-binary "/usr/bin/mu")
 (after! mu4e
-  (setq! mu4e-maildir (expand-file-name "/data/mail/eu/") ; the rest of the mu4e folders are RELATIVE to this one
-         mu4e-get-mail-command "/usr/bin/mbsync -a"
+  (setq! mu4e-maildir (expand-file-name "/data/mail_r/eu/") ; the rest of the mu4e folders are RELATIVE to this one
+         mu4e-get-mail-command "mbsync -a"
          mu4e-index-update-in-background t
          mu4e-compose-signature-auto-include t
          mu4e-use-fancy-chars t
@@ -98,7 +98,7 @@
                       (mu4e-drafts-folder     . "/Drafts")
                       (mu4e-refile-folder     . "/Archive")
                       (mu4e-sent-folder       . "/Sent")
-                      (mu4e-trash-folder      . "/Trash")
+;;                      (mu4e-trash-folder      . "/Trash")
                       (mu4e-update-interval   . 600)
                       ;(mu4e-sent-messages-behavior . 'delete)
                       )
@@ -119,8 +119,22 @@
 
 (global-unset-key [mouse-3])
 
-(with-eval-after-load 'mu4e
-    (define-key mu4e-main-mode-map (kbd "/") 'mu4e~headers-jump-to-maildir))
+;; Since the cleanup "mu4e-(actions|control|org|update).el: tidy up", '/' was
+;; move to 'mu4e-main-mode-hook, tried to remap the key but failed.
+;; For now, just disable the minor mode.
+;;
+(defun my-mu4e-hook ()
+  (let ((oldmap (cdr (assoc 'mu4e-search-minor-mode minor-mode-map-alist)))
+        (newmap (make-sparse-keymap)))
+    (set-keymap-parent newmap oldmap)
+    (define-key newmap (kbd "/") nil)
+    (make-local-variable 'minor-mode-overriding-map-alist)
+    (push `('mu4e-search-minor-mode . ,newmap) minor-mode-overriding-map-alist))
+  (mu4e-search-minor-mode -1)
+  (define-key mu4e-main-mode-map (kbd "/") 'mu4e~headers-jump-to-maildir)
+  )
+
+(add-hook 'mu4e-main-mode-hook 'my-mu4e-hook)
 
 ;;
 ;; for fly-spell
