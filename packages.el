@@ -43,5 +43,12 @@
 ;(package! builtin-package :recipe (:branch "develop"))
 
 
-(package! fill-column-indicator)
+(package! fill-column-indicator
+  :recipe (:host github :repo "Damenly/fill-column-indicator"
+           :files ("fill-column-indicator.el")))
+
 ;;(package! rtags-xref)
+
+(when init-file-debug
+    (require 'benchmark-init)
+      (add-hook 'doom-first-input-hook #'benchmark-init/deactivate))

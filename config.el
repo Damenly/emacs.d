@@ -224,3 +224,10 @@
 (setq lsp-lens-enable nil)
 (setq lsp-completion-provider :none)
 (setq lsp-ui-sideline-enable nil)
+
+(require 'fill-column-indicator)
+;;(setq fci-rule-width 1)
+;;(setq fci-rule-color "#303030")
+(fci-make-overlay-strings)
+
+
