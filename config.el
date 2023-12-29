@@ -158,13 +158,6 @@
 (define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
 (global-fci-mode 1)
 
-;;;mu4e mouse bindings
-;;;
-;;;
-
-
-
-
 ;;
 ;; for fly-spell
 ;;
@@ -182,90 +175,52 @@
 
 (setq python-shell-interpreter "/usr/local/bin/python3")
 
-;;rtags
-;;(after! rtags
-;;  (set-lookup-handlers! '(c-mode c++-mode) :async t
-;;    :definition #'rtags-find-symbol-at-point
-;;    :references #'rtags-find-references-at-point))
-;;(require 'rtags-xref)
-;;  (add-hook 'c-mode-common-hook #'rtags-xref-enable)
-;;
-;
-
-(defun my-rtags-location-stack-back ()
-  (interactive)
-  (rtags-location-stack-back)
-  (rtags-delete-rtags-windows))
-
 (defun dummy ())
-
-;; only run this if rtags is installed
-(when (require 'rtags nil :noerror)
-  ;; make sure you have company-mode installed
-  ;;(require 'company)
-  ;;(global-company-mode)
-  (define-key c-mode-base-map (kbd "M-.")
-    (function rtags-find-symbol-at-point))
-  (define-key c-mode-base-map (kbd "M-,")
-    (function my-rtags-location-stack-back))
-  (define-key c-mode-base-map (kbd "M-[")
-    (function rtags-find-references-at-point))
-  (define-key c-mode-base-map (kbd "M-p")
-    (function rtags-previous-match))
-  (define-key c-mode-base-map (kbd "M-n")
-    (function rtags-next-match))
-  (define-key c-mode-base-map [mouse-1]
-    (function dummy))
-  ;; disable prelude's use of C-c r, as this is the rtags keyboard prefix
-  ;;(define-key prelude-mode-map (kbd "c-c r") nil)
-  ;; install standard rtags keybindings. do m-. on the symbol below to
-  ;; jump to definition and see the keybindings.
-  (rtags-enable-standard-keybindings)
-  ;; comment this out if you don't have or don't use helm
-  ;;(setq rtags-use-helm f)
-  ;; company completion setup
-  (setq rtags-autostart-diagnostics t)
-  (rtags-diagnostics)
-  (setq rtags-completions-enabled nil)
-  ;;(push 'company-rtags company-backends)
-  ;;(global-company-mode)
-  ;;(define-key c-mode-base-map (kbd "TAB") (function company-complete))
-  ;; use rtags flycheck mode -- clang warnings shown inline
-  )
-(setq rtags-jump-to-first-match t)
-
-
-(defun cus-unset-keys()
-  (interactive)
-  (local-unset-key [mouse-1])
-  (local-unset-key [mouse-2])
-  (local-unset-key [mouse-3]))
-
-(add-hook 'c-mode-hook 'unset-keys)
-
-(add-hook 'post-command-hook
-          (lambda ()
-            (local-unset-key [mouse-1])
-            (local-unset-key [mouse-2])
-            (local-unset-key [mouse-3])))
-
-;;(setq rtags-mode-map nil)
-;;(setq rtags-dependency-tree-mode-map nil)
-
-(with-eval-after-load "rtags"
-     (interactive)
-     (local-unset-key [mouse-1])
-     (define-key rtags-mode-map [mouse-1] 'dummy)
-     (define-key rtags-dependency-tree-mode-map [mouse-1] 'dummy)
-     (define-key rtags-references-tree-mode-map [mouse-1] 'dummy)
-     (define-key rtags-location-stack-visualize-mode-map [mouse-1] 'dummy)
-     (setq rtags-mode-map nil)
-     (setq rtags-dependency-tree-mode-map nil)
-     (setq rtags-references-tree-mode-map nil)
-     (setq rtags-location-stack-visualize-mode-map nil))
 
 (global-hl-line-mode 1)
 (set-face-background 'hl-line "#0c586e")
 
-(add-to-list 'load-path "~/.doom.d/")
+(add-to-list 'load-path "~/.doom.d/modules")
 (require 'kernel)
+
+(setq large-file-warning-threshold nil)
+
+(savehist-mode -1)
+
+;; Disable exit confirmation
+;; (setq confirm-kill-emacs nil)
+;;
+(setq ccls-executable "/sbin/ccls")
+
+(setq lsp-prefer-flymake nil)
+
+(setq lsp-file-watch-threshold 200000)
+
+(defun lsp-completion-disable ()
+  (interactive)
+  (lambda ()
+    (lsp-lens-hide)
+    (lsp-completion-mode -1)
+    (setq lsp-completion-provider :none)
+    (setq lsp-completion-mode nil)
+    (setq lsp-enable-symbol-highlighting nil)
+    (lsp-lens-hide)
+  )
+  )
+
+(add-hook 'lsp-after-open-hook #'lsp-completion-disable)
+
+(with-eval-after-load "lsp-mode"
+  (lambda ()
+    (lsp-lens-hide)
+  (setq lsp-completion-provider :none)
+  (setq lsp-completion-mode nil)
+  (lsp-completion--disable adwddw)
+  (setq lsp-enable-symbol-highlighting nil)
+
+)
+  )
+
+(setq lsp-lens-enable nil)
+(setq lsp-completion-provider :none)
+(setq lsp-ui-sideline-enable nil)
