@@ -10,7 +10,7 @@
 
 ;; This is needed because emacs won't pick up mu4e otherwise:
 ;;(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e/")
-(add-to-list 'load-path "/root/workspace/mu/mu4e")
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 
 (doom! :input
        chinese
@@ -106,7 +106,7 @@
        ;;assembly          ; assembly for fun or debugging
        cc                ; C/C++/Obj-C madness
        ;;clojure           ; java with a lisp
-       common-lisp       ; if you've seen one lisp, you've seen them all
+       ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
        ;;csharp            ; unity, .NET, and mono shenanigans

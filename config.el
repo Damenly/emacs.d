@@ -7,7 +7,7 @@
 ;; These are used for a number of things, particularly for GPG configuration,
 ;; some email clients, file templates and snippets.
 (setq user-full-name "Su Yue"
-      user-mail-address "l@damenly.su")
+      user-mail-address "l@damenly.org")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -59,6 +59,8 @@
 (setq doom-theme 'doom-solarized-dark)
 (setq doom-solarized-dark-brighter-comments t)
 
+(setq mu4e-headers-thread-child-prefix '(" L " . " "))
+
 (setq mu4e-mu-binary "/usr/bin/mu")
 (after! mu4e
   (setq! mu4e-maildir (expand-file-name "/data/mail_r/eu/") ; the rest of the mu4e folders are RELATIVE to this one
@@ -88,13 +90,15 @@
          ;; Org mu4e
          ;;org-mu4e-convert-to-html t
          ))
-(set-email-account! "l@damenly.su"
-                    '((user-mail-address      . "l@damenly.su")
+
+(set-email-account! "l@damenly.org"
+                    '((user-mail-address      . "l@damenly.org")
                       (user-full-name         . "Su Yue")
-                      (smtpmail-smtp-server   . "mail.inbox.eu")
+                      (smtpmail-smtp-server   . "glacier.mxrouting.net")
                       (smtpmail-smtp-service  . 465)
                       (smtpmail-stream-type   . ssl)
                       (smtpmail-debug-info    . t)
+                      (smtpmail-auth-credentials (expand-file-name "~/.authinfo.gpg"))
                       (mu4e-drafts-folder     . "/Drafts")
                       (mu4e-refile-folder     . "/Archive")
                       (mu4e-sent-folder       . "/Sent")
@@ -131,8 +135,12 @@
     (make-local-variable 'minor-mode-overriding-map-alist)
     (push `('mu4e-search-minor-mode . ,newmap) minor-mode-overriding-map-alist))
   (mu4e-search-minor-mode -1)
-  (define-key mu4e-main-mode-map (kbd "/") 'mu4e~headers-jump-to-maildir)
-  )
+
+  (setq mu4e-maildir-shortcuts
+        '( (:maildir "/inbox"     :key  ?i)
+           (:maildir "/me"      :key  ?m)
+           (:maildir "/btrfs"      :key  ?b)))
+  (define-key mu4e-main-mode-map (kbd "/") 'mu4e~headers-jump-to-maildir))
 
 (add-hook 'mu4e-main-mode-hook 'my-mu4e-hook)
 
@@ -158,3 +166,24 @@
 
 (setq doom-theme 'wheatgrass)
 (setq doom-solarized-dark-brighter-comments t)
+
+
+(setq mu4e-use-fancy-chars t)
+(setq mu4e-headers-precise-alignment t)
+
+ (setq
+  mu4e-headers-draft-mark     '("D" . " ")
+  mu4e-headers-flagged-mark   '("F" . " ")
+  mu4e-headers-new-mark       '("N" . " ")
+  mu4e-headers-passed-mark    '("P" . " ")
+  mu4e-headers-replied-mark   '("R" . " ")
+  mu4e-headers-seen-mark      '("S" . " ")
+  mu4e-headers-trashed-mark   '("T" . " ")
+  mu4e-headers-attach-mark    '("a" . " ")
+  mu4e-headers-encrypted-mark '("x" . " ")
+  mu4e-headers-signed-mark    '("s" . " ")
+  mu4e-headers-unread-mark    '("u" . " ")
+  mu4e-headers-list-mark      '("s" . " ")
+  mu4e-headers-personal-mark  '("p" . " ")
+  mu4e-headers-calendar-mark  '("c" . " "))
+
