@@ -190,7 +190,7 @@
 ;; Disable exit confirmation
 ;; (setq confirm-kill-emacs nil)
 ;;
-(setq ccls-executable "/sbin/ccls")
+(setq ccls-executable "/usr/bin/ccls")
 
 (setq lsp-prefer-flymake nil)
 
@@ -229,5 +229,34 @@
 ;;(setq fci-rule-width 1)
 ;;(setq fci-rule-color "#303030")
 (fci-make-overlay-strings)
+
+
+(global-set-key (kbd "C-c r") 'xref-find-references)
+
+(defun my-xref-iterate-forward-cycle ()
+  "Iterate forward through the xref buffer, cycling to the beginning."
+  (interactive)
+  (let ((xref-buffer (get-buffer "*xref*")))
+    (if (and xref-buffer (buffer-live-p xref-buffer))
+        (with-current-buffer xref-buffer
+          (if (>= (point) (point-max))
+              (goto-char (point-min))
+            (xref-next-line)))
+      (message "No live *xref* buffer found."))))
+
+(defun my-xref-iterate-backward-cycle ()
+  "Iterate backward through the xref buffer, cycling to the end."
+  (interactive)
+  (let ((xref-buffer (get-buffer "*xref*")))
+    (if (and xref-buffer (buffer-live-p xref-buffer))
+        (with-current-buffer xref-buffer
+          (if (<= (point) (point-min))
+              (goto-char (point-max))
+            (xref-prev-line)))
+      (message "No live *xref* buffer found."))))
+
+;; Example keybindings (optional)
+(global-set-key (kbd "M-n") 'my-xref-iterate-forward-cycle)
+(global-set-key (kbd "M-p") 'my-xref-iterate-backward-cycle)
 
 
